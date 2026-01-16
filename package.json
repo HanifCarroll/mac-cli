@@ -1,0 +1,27 @@
+{
+  "name": "mac-cli",
+  "version": "1.0.0",
+  "description": "Unified CLI for macOS services: Mail, Calendar, Contacts, Reminders, and Notes",
+  "type": "module",
+  "bin": {
+    "mac": "./mac.ts"
+  },
+  "scripts": {
+    "install-global": "bun link"
+  },
+  "keywords": [
+    "macos",
+    "cli",
+    "mail",
+    "calendar",
+    "contacts",
+    "reminders",
+    "notes",
+    "applescript"
+  ],
+  "author": "Hanif Carroll",
+  "license": "MIT",
+  "engines": {
+    "bun": ">=1.0.0"
+  }
+}
