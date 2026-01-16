@@ -4,6 +4,22 @@ Unified CLI for macOS services: Mail, Calendar, Contacts, Reminders, and Notes.
 
 Built with [Bun](https://bun.sh) and AppleScript for native macOS integration.
 
+## How It Works
+
+This CLI uses AppleScript to communicate directly with macOS apps (Mail, Calendar, Contacts, Reminders, Notes). When you run a command:
+
+1. **Command parsing** - Bun parses the CLI arguments and routes to the appropriate service
+2. **AppleScript generation** - The CLI builds an AppleScript command specific to your request
+3. **Native execution** - The script runs via `osascript`, which talks directly to the macOS app
+4. **Response parsing** - Results are parsed from AppleScript's output format into structured data
+5. **Display** - Data is formatted and printed to the terminal
+
+This approach means:
+- **No API keys or authentication** - Uses your existing macOS app data
+- **Works offline** - Everything runs locally
+- **Real-time sync** - Changes appear immediately in the native apps
+- **Privacy** - Data never leaves your machine
+
 ## Installation
 
 ### Prerequisites
