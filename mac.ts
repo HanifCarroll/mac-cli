@@ -1779,6 +1779,27 @@ const notes = {
     }
     console.log("\n");
   },
+
+  delete(title: string): void {
+    const titleSafe = escapeAS(title);
+
+    const script = `
+      tell application "Notes"
+        set matchedNotes to (notes whose name contains "${titleSafe}")
+        if (count of matchedNotes) is 0 then
+          error "Note not found"
+        end if
+
+        set n to first item of matchedNotes
+        set nName to name of n
+        delete n
+        return nName
+      end tell
+    `;
+
+    const result = runAppleScript(script);
+    console.log(`\n Deleted note: ${result}\n`);
+  },
 };
 
 // ══════════════════════════════════════════════════════════════════════════════
@@ -1890,6 +1911,7 @@ NOTES COMMANDS:
   mac notes show <title>                     Show note content
   mac notes search <query>                   Search note content
   mac notes add <title> --body <text> [--folder <name>]  Create note
+  mac notes delete <title>                   Delete note by title
 
 EXAMPLES:
   mac mail accounts
@@ -2252,6 +2274,16 @@ try {
             process.exit(1);
           }
           notes.add(title, body, getArg("--folder"));
+          break;
+        }
+
+        case "delete": {
+          const title = args[2];
+          if (!title) {
+            console.error("Usage: mac notes delete <title>");
+            process.exit(1);
+          }
+          notes.delete(title);
           break;
         }
 
