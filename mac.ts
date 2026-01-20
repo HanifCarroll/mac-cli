@@ -601,6 +601,34 @@ const mail = {
     const count = runAppleScript(script);
     console.log(`\n Marked ${count} message(s) as ${read ? "read" : "unread"}.\n`);
   },
+
+  delete(messageIds: string[]): void {
+    const ids = messageIds.map(sanitizeId).join(", ");
+
+    const script = `
+      tell application "Mail"
+        set idList to {${ids}}
+        set deleteCount to 0
+
+        repeat with msgId in idList
+          repeat with acc in accounts
+            repeat with mb in mailboxes of acc
+              try
+                set msg to first message of mb whose id is msgId
+                delete msg
+                set deleteCount to deleteCount + 1
+              end try
+            end repeat
+          end repeat
+        end repeat
+
+        return deleteCount
+      end tell
+    `;
+
+    const count = runAppleScript(script);
+    console.log(`\n Deleted ${count} message(s).\n`);
+  },
 };
 
 // ══════════════════════════════════════════════════════════════════════════════
@@ -2047,6 +2075,16 @@ try {
             process.exit(1);
           }
           mail.markUnread(ids);
+          break;
+        }
+
+        case "delete": {
+          const ids = args.slice(2);
+          if (ids.length === 0) {
+            console.error("Usage: mac mail delete <id> [id...]");
+            process.exit(1);
+          }
+          mail.delete(ids);
           break;
         }
 
